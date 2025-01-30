@@ -1,4 +1,3 @@
-
 import {
   CanActivate,
   ExecutionContext,
@@ -6,13 +5,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { IS_PUBLIC_KEY, jwtConstants } from './constants';
+import { IS_PUBLIC_KEY, jwtSecret } from './constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService, private reflector: Reflector) {}
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -29,16 +31,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const payload = await this.jwtService.verifyAsync(
-        token,
-        {
-          secret: jwtConstants.secret
-        }
-      );
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: jwtSecret(),
+      });
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       request['user'] = payload;
-    } catch {
+    } catch (e) {
+      console.log('got error on verify:', e);
       throw new UnauthorizedException();
     }
     return true;
