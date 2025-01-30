@@ -15,13 +15,15 @@ import { Playlist } from './playlist/playlist.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'mydatabase.db', // Nom du fichier de la base de données SQLite
-      entities: [__dirname + '/**/*.entity{.ts,.js}'], // Chemin vers tes entités
+      type: 'mysql',
+      host: process.env.DATABASE_HOST,
+      port: 3306,
+      username: 'nestuser',
+      password: 'root',
+      database: 'nestdb',
+      autoLoadEntities: true,
       synchronize: true,
-      logger: 'advanced-console',
-      logging: 'all',
-      // autoLoadEntities: true,
+      logging: ['query', 'error', 'warn'],
     }),
     AuthModule,
     UsersModule,
