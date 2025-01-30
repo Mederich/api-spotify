@@ -15,15 +15,18 @@ import { Playlist } from './playlist/playlist.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DATABASE_HOST,
-      port: 3306,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadEntities: true,
+      type: 'sqlite',
+      database: 'mydatabase.db', // Nom du fichier de la base de données SQLite
+      entities: [__dirname + '/**/*.entity{.ts,.js}'], // Chemin vers tes entités
+      // type: 'mysql',
+      // host: process.env.DATABASE_HOST,
+      // port: 3306,
+      // username: process.env.DATABASE_USER,
+      // password: process.env.DATABASE_PASSWORD,
+      // database: process.env.DATABASE_NAME,
+      // autoLoadEntities: true,
       synchronize: true,
-      logging: ['query', 'error', 'warn'],
+      // logging: ['query', 'error', 'warn'],
     }),
     AuthModule,
     UsersModule,
