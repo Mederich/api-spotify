@@ -25,7 +25,6 @@ import { Playlist } from './playlist/playlist.entity';
       // password: process.env.DATABASE_PASSWORD,
       // database: process.env.DATABASE_NAME,
       // autoLoadEntities: true,
-      synchronize: true,
       // logging: ['query', 'error', 'warn'],
     }),
     AuthModule,
